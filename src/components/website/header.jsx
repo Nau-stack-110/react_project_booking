@@ -1,55 +1,134 @@
-<!-- source https://github.com/spacemadev/Free-blue-star-tailwind-landing-page-template -->
+const header = () => {
+  return (
+    <div>
+      <header className="bg-gray-500 left-0 right-0 top-0 z-50 px-4 fixed">
+        <div className="container mx-auto flex justify-between items-center py-4">
+          <div className="flex items-center">
+            <img
+              src="/2207_w023_n003_2682b_p1_2682.jpg"
+              alt="Logo"
+              className="h-14 w-auto mr-4 rounded-full"
+            />
+          </div>
+          <div className="flex md:hidden">
+            <button id="hamburger" className="text-white focus:outline-none">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+          <nav className="hidden md:flex md:flex-grow justify-center">
+            <ul className="flex justify-center space-x-4 text-white">
+              <li>
+                <a href="#home" className="hover:text-secondary font-bold">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#about" className="hover:text-secondary font-bold">
+                  About us
+                </a>
+              </li>
+              <li>
+                <a href="#mytickets" className="hover:text-secondary font-bold">
+                  My ticket
+                </a>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-secondary font-bold">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-secondary font-bold">
+                  Faq
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="hover:text-secondary font-bold">
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div className="hidden lg:flex items-center space-x-4">
+            <a
+              href="#"
+              className="bg-green-500 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded inline-block"
+            >
+              Login
+            </a>
+            <a
+              href="#"
+              className="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded inline-block"
+            >
+              Book Ticket
+            </a>
+          </div>
+        </div>
+      </header>
 
-<header class="bg-gray-500 sticky top-0 z-50 px-4">
-    <div class="container mx-auto flex justify-between items-center py-4">
-      <!-- Left section: Logo -->
-      <div class="flex items-center">
-        <img src="https://spacema-dev.com/blue-star/assets/images/blue-logo.png" alt="Logo" class="h-14 w-auto mr-4">
-      </div>
 
-      <!-- Hamburger menu (for mobile) -->
-      <div class="flex md:hidden">
-        <button id="hamburger" class="text-white focus:outline-none">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-        </button>
-      </div>
 
-      <!-- Center section: Menu -->
-      <nav class="hidden md:flex md:flex-grow justify-center">
-        <ul class="flex justify-center space-x-4 text-white">
-          <li><a href="#home" class="hover:text-secondary font-bold">Home</a></li>
-          <li><a href="#aboutus" class="hover:text-secondary font-bold">About us</a></li>
-          <li><a href="#results" class="hover:text-secondary font-bold">Results</a></li>
-          <li><a href="#reviews" class="hover:text-secondary font-bold">Reviews</a></li>
-          <li><a href="#portfolio" class="hover:text-secondary font-bold">Portfolio</a></li>
-          <li><a href="#team" class="hover:text-secondary font-bold">Team</a></li>
-          <li><a href="#contact" class="hover:text-secondary font-bold">Contact</a></li>
+
+      <nav
+        id="mobile-menu-placeholder"
+        className="mobile-menu hidden flex-col items-center space-y-8 md:hidden px-8"
+      >
+        <ul className="w-full text-center">
+          <li className="border-b border-gray-300 pb-4 pt-4">
+            <a href="#home" className="hover:text-secondary font-bold">
+              Home
+            </a>
+          </li>
+          <li className="border-b border-gray-300 pb-4 pt-4">
+            <a href="#about" className="hover:text-secondary font-bold">
+              About us
+            </a>
+          </li>
+          <li className="border-b border-gray-300 pb-4 pt-4">
+            <a href="#features" className="hover:text-secondary font-bold">
+              Features
+            </a>
+          </li>
+          <li className="border-b border-gray-300 pb-4 pt-4">
+            <a href="#faq" className="hover:text-secondary font-bold">
+              Faq
+            </a>
+          </li>
+          <li className="pb-4 pt-4">
+            <a href="#contact" className="hover:text-secondary font-bold">
+              Contact
+            </a>
+          </li>
         </ul>
+        <div className="flex flex-col mt-6 space-y-2 items-center">
+          <a
+            href="#"
+            className="bg-green-500 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded flex items-center justify-center min-w-[110px]"
+          >
+            Login
+          </a>
+          <a
+            href="#"
+            className="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded flex items-center justify-center min-w-[110px]"
+          >
+            Book Ticket
+          </a>
+        </div>
       </nav>
-
-      <!-- Right section: Buttons (for desktop) -->
-      <div class="hidden lg:flex items-center space-x-4">
-        <a href="#" class="bg-green-500 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded inline-block">Github</a>
-        <a href="#" class="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded inline-block">Download</a>
-      </div>
     </div>
-  </header>
+  );
+};
 
- <!-- Mobile menu -->
-<nav id="mobile-menu-placeholder" class="mobile-menu hidden flex-col items-center space-y-8 md:hidden px-8">
-  <ul class="w-full text-center">
-    <li class="border-b border-gray-300 pb-4 pt-4"><a href="#home" class="hover:text-secondary font-bold">Home</a></li>
-    <li class="border-b border-gray-300 pb-4 pt-4"><a href="#aboutus" class="hover:text-secondary font-bold">About us</a></li>
-    <li class="border-b border-gray-300 pb-4 pt-4"><a href="#results" class="hover:text-secondary font-bold">Results</a></li>
-    <li class="border-b border-gray-300 pb-4 pt-4"><a href="#reviews" class="hover:text-secondary font-bold">Reviews</a></li>
-    <li class="border-b border-gray-300 pb-4 pt-4"><a href="#portfolio" class="hover:text-secondary font-bold">Portfolio</a></li>
-    <li class="border-b border-gray-300 pb-4 pt-4"><a href="#team" class="hover:text-secondary font-bold">Team</a></li>
-    <li class="pb-4 pt-4"><a href="#contact" class="hover:text-secondary font-bold">Contact</a></li>
-  </ul>
-  <div class="flex flex-col mt-6 space-y-2 items-center">
-    <a href="#" class="bg-green-500 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded inline-block flex items-center justify-center min-w-[110px]">Github</a>
-    <a href="#" class="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded inline-block flex items-center justify-center min-w-[110px]">Download</a>
-  </div>
-</nav>
+export default header;
