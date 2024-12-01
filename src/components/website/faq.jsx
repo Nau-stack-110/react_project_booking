@@ -1,8 +1,11 @@
 const Faq = () => {
   return (
     <div>
-      <div id="faq" className="relative w-full bg-white px-6 pt-10 pb-8 mt-24
-       shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-2xl sm:rounded-lg sm:px-10">
+      <div
+        id="faq"
+        className="relative w-full bg-white px-6 pt-10 pb-8 mt-24
+       shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-2xl sm:rounded-lg sm:px-10"
+      >
         <div className="mx-auto px-5">
           <div className="flex flex-col items-center">
             <h2 className="mt-5 text-center text-3xl font-bold tracking-tight md:text-5xl">
@@ -16,7 +19,7 @@ const Faq = () => {
             <div className="py-5">
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> How does the billing work?</span>
+                  <span> Directives de paiment?</span>
                   <span className="transition group-open:rotate-180">
                     <svg
                       fill="none"
@@ -34,18 +37,28 @@ const Faq = () => {
                   </span>
                 </summary>
                 <p className="group-open:animate-fadeIn mt-3 text-neutral-600">
-                  Springerdata offers a variety of billing options, including
-                  monthly and annual subscription plans, as well as
-                  pay-as-you-go pricing for certain services. Payment is
-                  typically made through a credit card or other secure online
-                  payment method.
+                  <span className="text-red-600">VEUILLEZ NE PAS FERMER LA PAGE DE RÉSERVATION JUSQU&apos;À CE
+                  QUE VOUS AYEZ DÛMENT COMPLÉTÉ « l&apos;ÉTAPE 5 - CONFIRMATION
+                  » et ayez obtenu un ticket de transport valide. Le message de
+                  confirmation MVola ou Orange Money ou le reçu de paiement
+                  PayPal NE CONSTITUE EN AUCUN CAS UN TICKET DE TRANSPORT
+                  VALIDE. 
+                  </span><br /><br />
+                  Vous pouvez imprimer votre e-ticket pour pouvoir
+                  effectuer votre pointage dans nos agences. De plus, les
+                  e-tickets présentés sur l&apos;écran de votre smartphone sont
+                  acceptés lors du pointage. Veuillez verifiez votre e-ticket.
+                  Si les informations sur le e-ticket ne correspondent pas à
+                  l&apos;information fournie lors de la réservation, veuillez
+                  nous contacter à l&apos;adresse cotisse.transport@gmail.com ou
+                  par téléphone au +261 32 11 027 10 or +261 32 11 027 33.
                 </p>
               </details>
             </div>
             <div className="py-5">
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> Can I get a refund for my subscription?</span>
+                  <span> Peut-on annuler une réservation?</span>
                   <span className="transition group-open:rotate-180">
                     <svg
                       fill="none"
@@ -63,11 +76,9 @@ const Faq = () => {
                   </span>
                 </summary>
                 <p className="group-open:animate-fadeIn mt-3 text-neutral-600">
-                  We offer a 30-day money-back guarantee for most of its
-                  subscription plans. If you are not satisfied with your
-                  subscription within the first 30 days, you can request a full
-                  refund. Refunds for subscriptions that have been active for
-                  longer than 30 days may be considered on a case-by-case basis.
+                  Toute modification ou annulation d&apos;une réservation doit
+                  être faite auprès de l&apos;agence, 24 heures avant le départ
+                  et encourra une pénalité de 20%.
                 </p>
               </details>
             </div>
@@ -102,7 +113,7 @@ const Faq = () => {
             <div className="py-5">
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> Is there a free trial?</span>
+                  <span> Quels sont les modes de paiments accéptés?</span>
                   <span className="transition group-open:rotate-180">
                     <svg
                       fill="none"
@@ -120,16 +131,17 @@ const Faq = () => {
                   </span>
                 </summary>
                 <p className="group-open:animate-fadeIn mt-3 text-neutral-600">
-                  We offer a free trial of our software for a limited time.
-                  During the trial period, you will have access to a limited set
-                  of features and functionality, but you will not be charged.
+                  COTISSE Transport accepte les paiements en espèces dans les
+                  agences et mobile money (Orange Money et MVola) pour les
+                  réservations par téléphone et en ligne. Pour nos clients
+                  internationaux, nous accepterons bientôt Paypal et VISA.
                 </p>
               </details>
             </div>
             <div className="py-5">
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
-                  <span> How do I contact support?</span>
+                  <span> Comment se déroule l&apos;embarquement ?</span>
                   <span className="transition group-open:rotate-180">
                     <svg
                       fill="none"
@@ -147,10 +159,12 @@ const Faq = () => {
                   </span>
                 </summary>
                 <p className="group-open:animate-fadeIn mt-3 text-neutral-600">
-                  If you need help with our platform or have any other
-                  questions, you can contact the company support team by
-                  submitting a support request through the website or by
-                  emailing support@ourwebsite.com.
+                  Pour le bon déroulement de votre voyage, il est préférable
+                  d&apos;arriver 45 minutes avant votre départ. Chaque passager
+                  a droit à 15 kg (ATJ, TMM, WFI, WAM) / 20 kg (MJN, MOQ, DIE,
+                  TLE) de bagages. Les excédents seront facturé à 100 Ar / kg
+                  (ATJ), 200 Ar / kg (TMM, WFI, WAM), 400 Ar / kg (MJN, MOQ) et
+                  800 Ar / kg (DIE, TLE).
                 </p>
               </details>
             </div>

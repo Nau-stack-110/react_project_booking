@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Notfound = () => {
     return (
       <div>
@@ -10,12 +12,12 @@ const Notfound = () => {
               <p className="text-2xl md:text-3xl dark:text-gray-300">
                 Sorry, we could not find this page.
               </p>
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="px-8 py-4 text-xl font-semibold rounded bg-purple-600 text-gray-50 hover:text-gray-200"
               >
                 Back to home
-              </a>
+              </Link>
             </div>
           </div>
         </section>

@@ -1,9 +1,9 @@
+import { Link } from "react-router-dom";
 import enao from "/Linux.png";
-
 const Login = () => {
   return (
     <>
-            <div className="py-16">
+            <div className="py-24">
             <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto
              max-w-sm lg:max-w-4xl">
                 <img className="hidden lg:block lg:w-1/2 bg-cover"
@@ -65,7 +65,7 @@ const Login = () => {
 
                     <div className="mt-4 flex items-center justify-between">
                         <span className="border-b w-1/5 md:w-1/4"></span>
-                        <a href="#" className="text-xs text-gray-500 uppercase">or sign up</a>
+                        <Link to="/register" className="text-xs text-gray-500 uppercase">or sign up</Link>
                         <span className="border-b w-1/5 md:w-1/4"></span>
                     </div>
                 </div>

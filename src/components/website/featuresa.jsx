@@ -1,6 +1,6 @@
-const Features = () => {
+const Featuresa = () => {
   return (
-    <div>
+    <>
       <div id="features" className="container mx-auto max-w-5xl flex gap-12 mt-10 pt-24 pb-10  px-8
        flex-wrap items-start justify-center md:justify-between">
         <div className="grid gap-4 justify-items-center text-center md:flex-1">
@@ -64,8 +64,8 @@ const Features = () => {
           <p>Leading the Smart Home world for 10 years</p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Features;
+export default Featuresa;
