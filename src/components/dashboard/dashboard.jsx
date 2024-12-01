@@ -1,3 +1,5 @@
+import { BsFillArrowRightCircleFill } from "react-icons/bs"; 
+import { BsArrowLeftCircleFill } from "react-icons/bs"; 
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { FaUser, FaChartPie, FaBell, FaSignOutAlt, FaRoute, FaChartBar } from "react-icons/fa";
@@ -11,7 +13,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <div
         className={`bg-gray-800 text-white flex flex-col transition-all duration-300 ${
@@ -20,7 +22,7 @@ const Dashboard = () => {
       >
         <div className="p-4 flex justify-center cursor-pointer md:hidden" onClick={toggleSidebar}>
           {/* Bouton de basculement visible uniquement sur mobile */}
-          <span className="text-white">{isOpen ? "←" : "→"}</span>
+          <span className="text-white">{isOpen ? <BsArrowLeftCircleFill /> : <BsFillArrowRightCircleFill /> }</span>
         </div>
 
         <nav className="flex-1 px-2 py-4">
@@ -32,9 +34,9 @@ const Dashboard = () => {
               </Link>
             </li>
             <li className="hover:bg-gray-700 rounded">
-              <Link to="/trajet" className="flex items-center px-4 py-2">
+              <Link to="/taxibe" className="flex items-center px-4 py-2">
                 <FaRoute className="mr-3" />
-                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Trajet</span>
+                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Taxibe</span>
               </Link>
             </li>
             <li className="hover:bg-gray-700 rounded">

@@ -3,6 +3,7 @@ import UserTable from './components/dashboard/userTable';
 import StatsCards from './components/dashboard/statsCards';
 import Dashboard from './components/dashboard/dashboard';
 import ChartReservation from './components/dashboard/chartReservation';
+import TaxibeCards from './components/dashboard/taxibeCard';
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
             <Route path="/users" element={<UserTable />} />
             <Route path="/stats" element={<StatsCards />} />
             <Route path="/chart" element={<ChartReservation />} />
+            <Route path="/taxibe" element={<TaxibeCards taxibes={""} />} />
         </Route>
       </Routes>
   );
