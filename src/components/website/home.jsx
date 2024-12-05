@@ -3,9 +3,7 @@ import Accueil from "./accueil";
 const Home = () => {
   return (
     <>
-
     <Accueil/>
-
     </>
   )
 }

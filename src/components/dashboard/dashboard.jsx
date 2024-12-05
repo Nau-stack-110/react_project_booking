@@ -3,13 +3,19 @@ import { BsArrowLeftCircleFill } from "react-icons/bs";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { FaUser, FaChartPie, FaBell, FaSignOutAlt, FaRoute, FaChartBar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  // Fonction pour basculer l'état de la sidebar
+  const navigate = useNavigate();  
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    navigate('/login');
   };
 
   return (
@@ -28,31 +34,31 @@ const Dashboard = () => {
         <nav className="flex-1 px-2 py-4">
           <ul className="space-y-4">
             <li className="hover:bg-gray-700 rounded">
-              <Link to="/users" className="flex items-center px-4 py-2">
+              <Link to="/dashboard/users" className="flex items-center px-4 py-2">
                 <FaUser className="mr-3" />
                 <span className={`${isOpen ? "block" : "hidden"} md:block`}>Users</span>
               </Link>
             </li>
             <li className="hover:bg-gray-700 rounded">
-              <Link to="/taxibe" className="flex items-center px-4 py-2">
+              <Link to="/dashboard/taxibe" className="flex items-center px-4 py-2">
                 <FaRoute className="mr-3" />
                 <span className={`${isOpen ? "block" : "hidden"} md:block`}>Taxibe</span>
               </Link>
             </li>
             <li className="hover:bg-gray-700 rounded">
-              <Link to="/stats" className="flex items-center px-4 py-2">
+              <Link to="/dashboard/stats" className="flex items-center px-4 py-2">
                 <FaChartBar className="mr-3" />
                 <span className={`${isOpen ? "block" : "hidden"} md:block`}>Stats</span>
               </Link>
             </li>
             <li className="hover:bg-gray-700 rounded">
-              <Link to="/notifications" className="flex items-center px-4 py-2">
+              <Link to="/dashboard/notifications" className="flex items-center px-4 py-2">
                 <FaBell className="mr-3" />
                 <span className={`${isOpen ? "block" : "hidden"} md:block`}>Notifications</span>
               </Link>
             </li>
             <li className="hover:bg-gray-700 rounded">
-              <Link to="/chart" className="flex items-center px-4 py-2">
+              <Link to="/dashboard/chart" className="flex items-center px-4 py-2">
                 <FaChartPie className="mr-3" />
                 <span className={`${isOpen ? "block" : "hidden"} md:block`}>Charts</span>
               </Link>
@@ -62,16 +68,16 @@ const Dashboard = () => {
 
         {/* Logout */}
         <div className="p-4">
-          <Link to="/logout" className="flex items-center px-4 py-2 text-red-400 hover:bg-gray-700 rounded">
+          <button onClick={handleLogout} className="flex items-center px-4 py-2 text-red-400 hover:bg-gray-700 rounded">
             <FaSignOutAlt className="mr-3" />
             <span className={`${isOpen ? "block" : "hidden"} md:block`}>Logout</span>
-          </Link>
+          </button>
         </div>
       </div>
 
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
         <header className="bg-white shadow-md p-4">
           <h1 className="text-2xl font-bold text-gray-700">Welcome, Admin!</h1>
         </header>

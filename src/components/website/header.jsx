@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const Header = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -9,6 +9,7 @@ const Header = () => {
   };
 
   return (
+    <>
     <header className="bg-gray-500 fixed top-0 left-0 right-0 z-50 px-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center py-4">
         {/* Logo */}
@@ -55,7 +56,7 @@ const Header = () => {
           <Link to="/login" className="bg-green-500 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded">
             Login
           </Link>
-          <Link to="/available_taxibe" className="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded">
+          <Link to="/select_seats" className="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded">
             Book Ticket
           </Link>
         </div>
@@ -76,13 +77,20 @@ const Header = () => {
             <Link to="/login" className="bg-green-500 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded" onClick={toggleMobileMenu}>
               Login
             </Link>
-            <Link to="/available_taxibe" className="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded" onClick={toggleMobileMenu}>
+
+            <Link to="/select_seats" className="bg-blue-500 hover:bg-green-500 text-white font-semibold px-4 py-2 rounded" onClick={toggleMobileMenu}>
               Book Ticket
             </Link>
+
           </div>
         </ul>
       </div>
     </header>
+
+    <div>
+        <Outlet/>
+    </div>
+  </>
   );
 };
 

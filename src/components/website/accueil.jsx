@@ -1,4 +1,4 @@
-import io from "/Linux.png";
+import io from "/so.webp";
 const Accueil = () => {
   return (
     <>

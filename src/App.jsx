@@ -6,16 +6,36 @@ import ChartReservation from './components/dashboard/chartReservation';
 import TaxibeCards from './components/dashboard/taxibeCard';
 
 
+import Header from "./components/website/header";
+import Notfound from "./components/website/notfound";
+import Featuresa from "./components/website/featuresa";
+import Faq from "./components/website/faq";
+import SelectSeats from "./components/website/selectSeats";
+import Register from "./components/auth/register";
+import Login from "./components/auth/login";
+import Home from "./components/website/home";
+import PrivateRoute from './components/privatedRoute';
+
 const App = () => {
   return (
-      <Routes>
-        <Route path="/" element={<Dashboard />} >
-            <Route path="/users" element={<UserTable />} />
-            <Route path="/stats" element={<StatsCards />} />
-            <Route path="/chart" element={<ChartReservation />} />
-            <Route path="/taxibe" element={<TaxibeCards taxibes={""} />} />
-        </Route>
-      </Routes>
+    <Routes>
+      <Route path='/' element={ <Header/>} >
+        <Route path= "/" index element={<Home />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/features" element={<Featuresa />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/select_seats" element={<SelectSeats />} />
+      </Route>
+      <Route path="*" element={<Notfound />} />
+      <Route path="/dashboard" element={<PrivateRoute> <Dashboard /> </PrivateRoute>  } >
+        <Route path="/dashboard/users" element={<UserTable />} />
+        <Route path="/dashboard/stats" element={<StatsCards />} />
+        <Route path="/dashboard/chart" element={<ChartReservation />} />
+        <Route path="/dashboard/taxibe" element={<TaxibeCards taxibes={""} />} />
+      </Route>
+
+    </Routes>
   );
 };
 
@@ -40,35 +60,3 @@ export default App;
 
 
 
-
-// import Header from "./components/website/header";
-// import Login from "./components/auth/login";
-// import Home from "./components/website/home";
-// import {Routes, Route } from "react-router-dom";
-// import Notfound from "./components/website/notfound";
-
-// import Featuresa from "./components/website/featuresa";
-// import Faq from "./components/website/faq";
-// import AvailableTaxibe from "./components/website/availableTaxibe";
-// import Register from "./components/auth/register";
-// import Dashboard from "./components/dashboard/dashboard";
-// const App = () => {
-//   return (
-//     <div>
-//       <Header/>
-//       <Routes>
-//         <Route path="/" index element= {<Home/>}></Route>
-//         <Route path="/faq" element={<Faq />}></Route>
-//         <Route path="/features" element = { <Featuresa/> }></Route>
-//         <Route path="/login" element= {<Login/>} ></Route>
-//         <Route path="/register" element= {<Register/>} ></Route>
-//         <Route path="*" element= {<Notfound/>} ></Route>
-//         <Route path="/available_taxibe" element= {<AvailableTaxibe/>} ></Route>
-//       </Routes>
-//      <Dashboard/>
-
-//     </div>
-//   )
-// }
-
-// export default App;
