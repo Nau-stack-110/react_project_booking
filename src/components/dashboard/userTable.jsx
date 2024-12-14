@@ -2,7 +2,6 @@ import { useState } from 'react';
 const usersData = [
   { id: 1, name: 'John Doe', address: '123 Main St', tel: '123-456-7890', date_inscrit: '2024-01-01' },
   { id: 2, name: 'Jane Smith', address: '456 Elm St', tel: '987-654-3210', date_inscrit: '2024-02-15' },
-  // Ajoutez plus de données fictives ou réalistes
 ];
 
 const UsersTable = () => {
@@ -17,7 +16,6 @@ const UsersTable = () => {
     <div className="p-6 bg-gray-100">
       <h2 className="text-2xl font-bold mb-4">Users List</h2>
       
-      {/* Barre de filtre */}
       <input
         type="text"
         placeholder="Search by name..."
@@ -26,7 +24,6 @@ const UsersTable = () => {
         onChange={(e) => setFilter(e.target.value)}
       />
       
-      {/* Tableau responsive */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-800 text-white">

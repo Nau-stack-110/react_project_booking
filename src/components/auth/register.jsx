@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from './authUser'; 
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,9 +24,8 @@ const Register = () => {
     if (!formData.username.trim()) newErrors.username = 'Le nom d’utilisateur est requis.';
     if (!formData.email.trim()) newErrors.email = 'L’email est requis.';
     if (!formData.password) newErrors.password = 'Le mot de passe est requis.';
-    if (formData.password !== formData.password2)
-      newErrors.password2 = 'Les mots de passe ne correspondent pas.';
-
+    if(formData.password.length < 8) newErrors.password = 'Le mot de passe doit etre au moins 8 caractères.';
+    if (formData.password !== formData.password2) newErrors.password2 = 'Les mots de passe ne correspondent pas.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -36,14 +37,30 @@ const handleSubmit = async (e) => {
     try {
       const response = await registerUser(formData);
       console.log('Utilisateur inscrit avec succès :', response.data);
-      alert('Inscription réussie !');
+      Swal.fire({
+        title: 'Inscription réussie!! \n Veuillez connecter maintenant',
+        icon:'success',
+        toast:'true',
+        timer:'6000',
+        position:'top-right',
+        timerProgressBase:true,
+        showConfirmButton:false,
+      })
+      navigate('/login');
     } catch (error) {
       console.error('Erreur d\'inscription :', error.response.data);
-      alert('Échec de l\'inscription. Veuillez réssayer.');
+      Swal.fire({
+        title: 'Echec d\'inscription!!',
+        icon:'error',
+        toast:'true',
+        timer:'6000',
+        position:'top-right',
+        timerProgressBase:true,
+        showConfirmButton:false,
+      })
     }
   }
 };
-
 
   return (
     <div className="flex items-center pt-8 justify-center min-h-screen bg-gray-100">
@@ -65,7 +82,6 @@ const handleSubmit = async (e) => {
             {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
           </div>
 
-          {/* Email */}
           <div className="mb-4">
             <label className="block text-gray-700 font-bold">Email</label>
             <input
@@ -97,7 +113,6 @@ const handleSubmit = async (e) => {
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             </div>
 
-            {/* Confirmation du mot de passe */}
             <div className="mb-4">
               <label className="block text-gray-700 font-bold">Confirm Password</label>
               <input
@@ -117,7 +132,6 @@ const handleSubmit = async (e) => {
 
           </div>
 
-          {/* Bouton de soumission */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
@@ -126,7 +140,6 @@ const handleSubmit = async (e) => {
           </button>
         </form>
 
-        {/* Lien vers la connexion */}
         <p className="mt-4 text-gray-600 text-center">
           Vous avez déjà un compte ?{' '}
           <Link to="/login" className="text-blue-500 hover:underline">

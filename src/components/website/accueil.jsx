@@ -1,32 +1,52 @@
+import { useState } from "react";
 import io from "/so.webp";
+import { useNavigate } from "react-router-dom";
+
 const Accueil = () => {
+    const [fromCity, setFromCity] = useState('Antsirabe');
+    const [toCity, setToCity] = useState('Antananarivo');
+    const [travelDate, setTravelDate] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+      e.preventDefault()
+      if (!fromCity || !toCity || !travelDate) {
+        alert("veuillez remplir tous les champs !");
+        return;
+      }
+      navigate(`/available-taxibe/?from=${fromCity}&to=${toCity}&date=${travelDate}`)
+    }
+
   return (
     <>
      <section id="home" className="text-gray-600 body-font">
       <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
         <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col mb-16 md:mb-0 items-center text-center">
           <div className="relative">
-            
             <div className="container mb-8 mx-auto">
               <div className="lg:w-1/2 md:w-2/3 mx-auto">
+              <form onSubmit={handleSearch} >
                 <div className="flex flex-wrap -m-2">
                   <div className="p-2 w-1/2">
                     <div className="relative">
                       <label
-                        htmlFor="name"
                         className="leading-7 text-sm text-gray-600"
                         >From</label>
                       <select
-                        name=""
-                        id=""
+                        value={fromCity}
+                        onChange={(e) => setFromCity(e.target.value)}
                         className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                       >
-                        <option value="">Antsirabe</option>
-                        <option value="">Antananarivo</option>
-                        <option value="">Morondava</option>
-                        <option value="">Mandoto</option>
-                        <option value="">Moramanga</option>
-                        <option value="">Ambatolampy</option>
+                        <option value="Antsirabe">Antsirabe</option>
+                        <option value="Antananarivo">Antananarivo</option>
+                        <option value="Morondava">Morondava</option>
+                        <option value="Mandoto">Mandoto</option>
+                        <option value="Moramanga">Moramanga</option>
+                        <option value="Ambatolampy">Ambatolampy</option>
+                        <option value="Fianarantsoa">Fianarantsoa</option>
+                        <option value="Mahajanga">Mahajanga</option>
+                        <option value="Toamasina">Toamasina</option>
                       </select>
                     </div>
                   </div>
@@ -34,20 +54,22 @@ const Accueil = () => {
                   <div className="p-2 w-1/2">
                     <div className="relative">
                       <label
-                        htmlFor="email"
                         className="leading-7 text-sm text-gray-600"
                         >To</label>
                       <select
-                        name=""
-                        id=""
+                        value={toCity}
+                        onChange={(e) => setToCity(e.target.value)}
                         className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                       >
-                        <option value="">Antsirabe</option>
-                        <option value="">Antananarivo</option>
-                        <option value="">Morondava</option>
-                        <option value="">Mandoto</option>
-                        <option value="">Moramanga</option>
-                        <option value="">Ambatolampy</option>
+                        <option value="Antananarivo">Antananarivo</option>
+                        <option value="Antsirabe">Antsirabe</option>
+                        <option value="Morondava">Morondava</option>
+                        <option value="Mandoto">Mandoto</option>
+                        <option value="Moramanga">Moramanga</option>
+                        <option value="Ambatolampy">Ambatolampy</option>
+                        <option value="Fianarantsoa">Fianarantsoa</option>
+                        <option value="Mahajanga">Mahajanga</option>
+                        <option value="Toamasina">Toamasina</option>
                       </select>
                     </div>
                   </div>
@@ -55,14 +77,13 @@ const Accueil = () => {
                   <div className="p-2 w-full text-center">
                     <div className="relative">
                       <label
-                        htmlFor="message"
                         className="leading-7 text-sm text-gray-600"
                         >Date
                       </label>
                       <input
                         type="date"
-                        name=""
-                        id=""
+                        value={travelDate}
+                        onChange={(e) => setTravelDate(e.target.value)}
                         className="bg-gray-100 flex mx-auto rounded border border-gray-300 text-base text-gray-700 py-2 px-3"
                       />
                     </div>
@@ -75,7 +96,8 @@ const Accueil = () => {
                       Search
                     </button>
                   </div>
-                </div>
+                </div>        
+              </form>
               </div>
             </div>
           </div>

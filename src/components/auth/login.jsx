@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import enao from "/Linux.png";
 import { useState } from 'react';
 import { loginUser } from './authUser';
 import { useNavigate } from 'react-router-dom';
+import  {jwtDecode}  from "jwt-decode";
+import Swal from "sweetalert2";
 
 
 const Login = () => {
@@ -17,14 +19,44 @@ const Login = () => {
       e.preventDefault();
       try {
         const response = await loginUser(formData);
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
+        const {access, refresh} = response.data;
         
-        alert('Connexion réussie !');
-        navigate('/dashboard'); 
+        const decodedToken = jwtDecode(access);
+        console.log(decodedToken);
+
+        const isAdmin = decodedToken.is_superuser;
+        console.log("isAdmin:", isAdmin);
+
+        localStorage.setItem('access_token', access);
+        localStorage.setItem('refresh_token', refresh);
+        localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');  
+        
+        Swal.fire({
+            title: 'Connexion réussie!!',
+            icon:'success',
+            toast:'true',
+            timer:'6000',
+            position:'top-right',
+            timerProgressBase:true,
+            showConfirmButton:false,
+          })
+
+        if (isAdmin) {
+            navigate('/dashboard'); 
+        }else{
+            navigate('/');
+        }
       } catch (error) {
         console.error('Erreur de connexion :', error.response.data);
-        alert('Identifiants incorrects.');
+        Swal.fire({
+            title: 'Indentifiants incorrectes!!',
+            icon:'error',
+            toast:'true',
+            timer:'6000',
+            position:'top-right',
+            timerProgressBase:true,
+            showConfirmButton:false,
+          })
       }
     };
     return (

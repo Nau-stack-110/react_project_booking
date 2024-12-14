@@ -1,3 +1,4 @@
+import { BiTaxi } from "react-icons/bi"; 
 import { BsFillArrowRightCircleFill } from "react-icons/bs"; 
 import { BsArrowLeftCircleFill } from "react-icons/bs"; 
 import { Link, Outlet } from "react-router-dom";
@@ -18,6 +19,13 @@ const Dashboard = () => {
     navigate('/login');
   };
 
+  const navbar = [
+    {title:'Users', icon:FaUser, link:'/dashboard/users'},
+    {title:'Taxibe', icon:BiTaxi, link:'/dashboard/taxibe'},
+    {title:'Stats', icon:FaChartPie, link:'/dashboard/stats'},
+    {title:'Notification', icon:FaBell, link:'/dashboard/notification'},
+    {title:'Charts', icon:FaChartBar, link:'/dashboard/chart'},
+  ]
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
@@ -27,46 +35,22 @@ const Dashboard = () => {
         } md:w-64`}
       >
         <div className="p-4 flex justify-center cursor-pointer md:hidden" onClick={toggleSidebar}>
-          {/* Bouton de basculement visible uniquement sur mobile */}
           <span className="text-white">{isOpen ? <BsArrowLeftCircleFill /> : <BsFillArrowRightCircleFill /> }</span>
         </div>
 
         <nav className="flex-1 px-2 py-4">
           <ul className="space-y-4">
-            <li className="hover:bg-gray-700 rounded">
-              <Link to="/dashboard/users" className="flex items-center px-4 py-2">
-                <FaUser className="mr-3" />
-                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Users</span>
+            {navbar.map((navy, index) => (
+            <li key={index} className="hover:bg-gray-700 rounded">
+              <Link to={navy.link} className="flex items-center px-4 py-2">
+                <navy.icon className="mr-3" />
+                <span className={`${isOpen ? "block" : "hidden"} md:block`}>{navy.title}</span>
               </Link>
             </li>
-            <li className="hover:bg-gray-700 rounded">
-              <Link to="/dashboard/taxibe" className="flex items-center px-4 py-2">
-                <FaRoute className="mr-3" />
-                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Taxibe</span>
-              </Link>
-            </li>
-            <li className="hover:bg-gray-700 rounded">
-              <Link to="/dashboard/stats" className="flex items-center px-4 py-2">
-                <FaChartBar className="mr-3" />
-                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Stats</span>
-              </Link>
-            </li>
-            <li className="hover:bg-gray-700 rounded">
-              <Link to="/dashboard/notifications" className="flex items-center px-4 py-2">
-                <FaBell className="mr-3" />
-                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Notifications</span>
-              </Link>
-            </li>
-            <li className="hover:bg-gray-700 rounded">
-              <Link to="/dashboard/chart" className="flex items-center px-4 py-2">
-                <FaChartPie className="mr-3" />
-                <span className={`${isOpen ? "block" : "hidden"} md:block`}>Charts</span>
-              </Link>
-            </li>
+            ))}
           </ul>
         </nav>
 
-        {/* Logout */}
         <div className="p-4">
           <button onClick={handleLogout} className="flex items-center px-4 py-2 text-red-400 hover:bg-gray-700 rounded">
             <FaSignOutAlt className="mr-3" />
@@ -76,12 +60,12 @@ const Dashboard = () => {
       </div>
 
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow-md p-4">
           <h1 className="text-2xl font-bold text-gray-700">Welcome, Admin!</h1>
         </header>
-        
+
         <Outlet />
       </div>
     </div>

@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
-import { toast } from 'react-toastify'; 
+import Swal from 'sweetalert2';
 
 const TaxibeCards = () => {
   const [taxibes, setTaxibes] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTaxibe, setCurrentTaxibe] = useState(null); // Taxibe à modifier ou ajouter
-
+  const [currentTaxibe, setCurrentTaxibe] = useState(null); 
   const [formData, setFormData] = useState({
     marque: '',
     chauffeur: '',
@@ -34,7 +33,6 @@ const TaxibeCards = () => {
     getTaxibe();
   }, []);
 
-  // Ouvrir le modal pour ajout/édition
   const openModal = (taxibe = null) => {
     if (taxibe) {
       setCurrentTaxibe(taxibe);
@@ -65,7 +63,6 @@ const TaxibeCards = () => {
     setModalOpen(false);
   };
 
-  // Gérer la modification des champs de formulaire
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -74,7 +71,6 @@ const TaxibeCards = () => {
     }));
   };
 
-  // Gérer l'upload de fichier pour la photo
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {   
@@ -85,7 +81,6 @@ const TaxibeCards = () => {
     }
   };
 
-  // Gérer la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
@@ -97,17 +92,41 @@ const TaxibeCards = () => {
       if (currentTaxibe) {
         const response = await axios.put(`http://127.0.0.1:8000/api/taxibe/${currentTaxibe.id}/`, formDataToSend);
         setTaxibes(taxibes.map(taxibe => taxibe.id === currentTaxibe.id ? response.data : taxibe));
-        toast.success("Taxibe mis à jour avec succès !");
+        Swal.fire({
+          title: 'TaxiBe mise à jour avec success',
+          icon:'success',
+          toast:'true',
+          timer:'6000',
+          position:'top-right',
+          timerProgressBase:true,
+          showConfirmButton:false,
+        })
       } else {
         // Create
         const response = await axios.post("http://127.0.0.1:8000/api/taxibe/", formDataToSend);
         setTaxibes([...taxibes, response.data]);
-        toast.success("Nouveau taxibe ajouté !");
+        Swal.fire({
+          title: 'TaxiBe créé avec success',
+          icon:'success',
+          toast:'true',
+          timer:'6000',
+          position:'top-right',
+          timerProgressBase:true,
+          showConfirmButton:false,
+        })
       }
       closeModal();
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
-      toast.error("Une erreur est survenue.");
+      Swal.fire({
+        title: 'An error occured',
+        icon:'error',
+        toast:'true',
+        timer:'6000',
+        position:'top-right',
+        timerProgressBase:true,
+        showConfirmButton:false,
+      })
     }
   };
 
@@ -121,24 +140,25 @@ const TaxibeCards = () => {
       </div>
 
       {/* Liste des taxibes */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {taxibes.length === 0 ? 'Il n\'y pas des taxibes pour le moment ' : (<>  
         {isLoading ? ("Loading...") : (
           taxibes.map((taxibe) => (
             <div key={taxibe.id} className="bg-white shadow-md rounded-lg overflow-hidden">
-              <img src={taxibe.photo} alt={taxibe.marque} className="w-full h-40 object-cover" />
+              <img src={taxibe.photo} alt={taxibe.marque} className="w-full h-28 object-cover" />
               <div className="p-4">
                 <h3 className="text-xl font-bold mb-2">{taxibe.marque} - {taxibe.nb_place}</h3>
                 <p className="text-gray-600">Chauffeur: {taxibe.chauffeur}</p>
                 <p className="text-gray-600">Matricule: {taxibe.matricule}</p>
                 <p className="text-gray-600">Coopérative: {taxibe.cooperative}</p>
               </div>
+
               <div className="flex justify-between p-4 border-t">
                 <button onClick={() => openModal(taxibe)} className="text-blue-500 hover:text-blue-700 flex items-center">
-                  <FaEdit className="mr-1" /> Modifier
+                  <FaEdit className="mr-1" />
                 </button>
                 <button className="text-red-500 hover:text-red-700 flex items-center">
-                  <FaTrashAlt className="mr-1" /> Supprimer
+                  <FaTrashAlt className="mr-1" />
                 </button>
               </div>
             </div>
@@ -153,7 +173,6 @@ const TaxibeCards = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-2xl font-semibold mb-4">{currentTaxibe ? 'Modifier Taxibe' : 'Ajouter Taxibe'}</h2>
             <form onSubmit={handleSubmit}>
-              {/* Champs du formulaire */}
               <div className="mb-4">
                 <label className="block text-gray-700">Marque</label>
                 <input type="text" name="marque" value={formData.marque} onChange={handleChange} className="w-full px-4 py-2 border rounded" required />

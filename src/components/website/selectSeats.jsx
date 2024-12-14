@@ -114,3 +114,22 @@ const SelectSeats = () => {
 };
 
 export default SelectSeats;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
