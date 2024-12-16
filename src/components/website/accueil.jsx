@@ -1,5 +1,5 @@
 import { useState } from "react";
-import io from "/so.webp";
+import io from "../../assets/io.png";
 import { useNavigate } from "react-router-dom";
 
 const Accueil = () => {

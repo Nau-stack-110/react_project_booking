@@ -3,7 +3,7 @@ import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { BsArrowLeftCircleFill } from "react-icons/bs"; 
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaChartPie, FaBell, FaSignOutAlt, FaRoute, FaChartBar } from "react-icons/fa";
+import { FaUser, FaChartPie, FaBell, FaSignOutAlt, FaChartBar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {

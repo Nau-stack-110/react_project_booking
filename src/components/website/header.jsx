@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import io from "../../assets/2207_w023_n003_2682b_p1_2682.jpg";
 
 const Header = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -29,7 +30,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center py-4">
         <div className="flex items-center">
           <img
-            src="/2207_w023_n003_2682b_p1_2682.jpg"
+            src={io}
             alt="Logo"
             className="h-14 w-auto mr-4 rounded-full"
           />

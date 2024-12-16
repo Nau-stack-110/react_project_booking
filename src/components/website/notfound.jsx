@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import io from "/404.jpg";
+import io from "../../assets/404.jpg";
 const Notfound = () => {
     return (
       <div>

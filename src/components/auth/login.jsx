@@ -1,5 +1,5 @@
 import { Link} from "react-router-dom";
-import enao from "/Linux.png";
+import enao from "../../assets/Linux.png";
 import { useState } from 'react';
 import { loginUser } from './authUser';
 import { useNavigate } from 'react-router-dom';

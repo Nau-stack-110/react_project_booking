@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Routes>
       <Route path='/' element={ <Header/>} >
-        <Route path= "/" index element={<Home />} />
+        <Route path= "/" index element={ <Home /> } />
         <Route path= "/available-taxibe" index element={<AvailableTaxibe />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/features" element={<Featuresa />} />
@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/select_seats" element={<SelectSeats />} />
       </Route>
       <Route path="*" element={<Notfound />} />
-        <Route path="/dashboard" element={<PrivateRoute><AdminRoute><Dashboard /></AdminRoute></PrivateRoute>} >
+      <Route path="/dashboard" element={<PrivateRoute><AdminRoute><Dashboard /></AdminRoute></PrivateRoute>} >
         <Route path="/dashboard/users" element={<UserTable />} />
         <Route path="/dashboard/stats" element={<StatsCards />} />
         <Route path="/dashboard/chart" element={<ChartReservation />} />
