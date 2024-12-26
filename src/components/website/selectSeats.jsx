@@ -1,113 +1,116 @@
 import { useState } from 'react';
+import { GiSteeringWheel } from 'react-icons/gi';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const SelectSeats = () => {
+  const location = useLocation();
+  const { totalPlaces, marque } = location.state;
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [alert, setAlert] = useState(false);
-  const seatRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-  const seatColumns = [1, 2, 3, 4];
+  const [showAlert, setShowAlert] = useState(false);
   const maxSeats = 4;
+  const navigate = useNavigate();
 
-  const handleSeatClick = (seat) => {
-    if (selectedSeats.includes(seat)) {
-      setSelectedSeats(selectedSeats.filter((s) => s !== seat));
+  const vehicleConfig = {
+    type: marque,
+    totalSeats: totalPlaces,
+    layout: Array.from({ length: totalPlaces }, (_, i) => i + 1),
+  };
+
+  const reservedSeats = [];
+
+  const handleSeatClick = (seatNumber) => {
+    if (seatNumber === 1) return;
+    if (reservedSeats.includes(seatNumber)) return;
+    
+    if (selectedSeats.includes(seatNumber)) {
+      setSelectedSeats(selectedSeats.filter((s) => s !== seatNumber));
     } else if (selectedSeats.length < maxSeats) {
-      setSelectedSeats([...selectedSeats, seat]);
+      setSelectedSeats([...selectedSeats, seatNumber]);
     } else {
-      setAlert(true);
-      setTimeout(() => setAlert(false), 3000); // Alert disappears after 3 seconds
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
     }
   };
 
-  const getFare = (seat) => {
-    // Exemple de tarif : basé sur la rangée
-    return seatRows.indexOf(seat[0]) < 3 ? 50 : 30;
+  const getSeatColor = (seatNumber) => {
+    if (seatNumber === 1) return 'bg-red-500';
+    if (reservedSeats.includes(seatNumber)) return 'bg-green-500';
+    if (selectedSeats.includes(seatNumber)) return 'bg-blue-500 text-white';
+    return 'bg-gray-200';
   };
 
-  const seatClass = (seat) => {
-    return seatRows.indexOf(seat[0]) < 3 ? 'Premium' : 'Standard';
+  const handleBookSeat = () => {
+    navigate('/book-seat', { state: { selectedSeats } });
   };
 
-  const confirmJourney = () => {
-    alert(`Seats confirmed: ${selectedSeats.join(', ')}`);
-  };
+  const totalPrice = selectedSeats.length * 10;
 
   return (
-    <div className="container mx-auto py-24 mb-10">
-      <div className="flex justify-center">
-        <div className="w-full md:w-9/12">
-          <div className="bg-white p-5 shadow rounded-lg">
-           
-            <div className="flex flex-col md:flex-row">
-              
-              {/* Section de sélection des sièges */}
-              <div className="w-full md:w-1/2 mb-5 md:mb-0">
-                <h6 className="text-lg font-semibold mb-4">Sélectionner les sièges</h6>
-                <div className="space-y-4">
-                  {seatColumns.map((col) => (
-                    <div key={col} className="flex justify-center space-x-2">
-                      {seatRows.map((row) => {
-                        const seat = `${row}${col}`;
-                        return (
-                          <button
-                            key={seat}
-                            onClick={() => handleSeatClick(seat)}
-                            className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                              selectedSeats.includes(seat) ? 'bg-blue-500' : 'bg-gray-200'
-                            } hover:bg-blue-300`}
-                          >
-                            <span className="text-sm font-bold">{seat}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-                {alert && (
-                  <div className="mt-4 p-2 bg-red-100 text-red-600 border border-red-300 rounded">
-                    Vous pouvez acheter seulement 4 sièges à la fois.
-                  </div>
-                )}
+    <div className="container mx-auto py-8 px-4 flex flex-col md:flex-row">
+      <div className="w-full md:w-1/3 p-4">
+        <div className="bg-white rounded-lg shadow-lg p-4">
+          <h3 className="text-lg font-semibold mb-4">Sièges Sélectionnés</h3>
+          {selectedSeats.length > 0 ? (
+            <div>
+              <ul className="space-y-2">
+                {selectedSeats.map((seat) => (
+                  <li key={seat} className="flex justify-between bg-gray-100 p-2 rounded">
+                    <span>Siège n°{seat}</span>
+                    <span>10 €</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 border-t pt-2">
+                <p className="font-bold">Prix Total: {totalPrice} €</p>
               </div>
-
-              {/* Section des détails des sièges sélectionnés */}
-              <div className="w-full md:w-1/2">
-                <div className="overflow-auto">
-                  <table className="w-full table-auto border-collapse">
-                    <thead className="bg-gray-200">
-                      <tr>
-                        <th className="p-2 text-left">Sièges</th>
-                        <th className="p-2 text-left">Tarif (€)</th>
-                        <th className="p-2 text-left">Classe</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedSeats.map((seat) => (
-                        <tr key={seat} className="border-t">
-                          <td className="p-2">{seat}</td>
-                          <td className="p-2">{getFare(seat)}</td>
-                          <td className="p-2">{seatClass(seat)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="bg-gray-100 p-4 mt-4 rounded text-center font-bold">
-                  Total : €{selectedSeats.reduce((total, seat) => total + getFare(seat), 0)}
-                </div>
-                <div className="mt-5">
-                  <button
-                    onClick={confirmJourney}
-                    className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-                  >
-                    Confirmer
-                  </button>
-                </div>
-              </div>
-
             </div>
-
-          </div>
+          ) : (
+            <p>Aucun siège sélectionné</p>
+          )}
         </div>
+      </div>
+
+      <div className="w-full md:w-2/3 flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-8 mt-10">
+          {vehicleConfig.type} - {vehicleConfig.totalSeats} places
+        </h2>
+
+        <div className="grid grid-cols-4 gap-4">
+          {vehicleConfig.layout.map((seatNumber) => (
+            <button
+              key={seatNumber}
+              onClick={() => handleSeatClick(seatNumber)}
+              className={`
+                w-12 h-12 rounded-lg flex items-center justify-center
+                ${getSeatColor(seatNumber)}
+                transition-all duration-200
+                ${seatNumber === 1 ? 'cursor-not-allowed' : 'hover:opacity-80'}
+              `}
+            >
+              {seatNumber === 1 ? (
+                <GiSteeringWheel className="text-white text-xl" />
+              ) : (
+                <span className="font-bold">{seatNumber}</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-4">
+          <button 
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleBookSeat}
+            disabled={selectedSeats.length === 0}
+          >
+            Réserver
+          </button>
+        </div>
+
+        {showAlert && (
+          <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg">
+            Maximum {maxSeats} sièges autorisés
+          </div>
+        )}
       </div>
     </div>
   );

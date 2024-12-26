@@ -15,59 +15,64 @@ const AvailableTaxibe = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() =>{
+  useEffect(() => {
     const fetchTaxiBe = async () => {
-      try{
+      try {
         const response = await axios.get("http://localhost:8000/api/available_taxibe/", {
           params: { from: fromCity, to: toCity, date: travelDate },
         });
-        console.log(response.data);
         setTaxiBes(response.data);
         setloading(false);
-      }catch (e){
-        seterror("Erreur lors de la récuperation des taxibes.", e);
+      } catch (e) {
+        seterror("Erreur lors de la récupération des taxibes.", e);
         setloading(false);
       }
     };
     fetchTaxiBe();
   }, [fromCity, toCity, travelDate]);
 
-  if (loading) return <p>Loading....</p>
-  if (error) return <p> {error} </p>
-
+  if (loading) return <p>Loading....</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <>
-    <div className="flex-1 justify-center items-center p-5 ">
-       <h2 className="mt-16 ">Resultats : </h2>
-       <div>
-
-       { taxibes.length > 0 ? (
-         taxibes.map((taxibe) => (
-            <div key={taxibe.id} className="flex justify-between items-center mb-4 p-3 mx-0 border-[#ccc] border-[1px] border-solid">
-              <img src={`http://localhost:8000/${taxibe.taxibe.photo}`} 
-              alt={`Taxibe - ${taxibe.taxibe.marque}`} 
-              className="w-16 h-16 object-cover" />
-              <p>marque : {taxibe.taxibe.marque}</p>
-              <p>matricule: {taxibe.taxibe.matricule}</p>
-              <p>chauffeur: {taxibe.taxibe.chauffeur}</p>
-              <p>places dispo : {taxibe.place_dispo} </p>
+    <div className="container mx-auto py-8 px-4">
+      <h2 className="text-2xl font-bold text-center mb-8">Résultats : Taxis Disponibles</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {taxibes.length > 0 ? (
+          taxibes.map((taxibe) => (
+            <div key={taxibe.id} className="bg-white rounded-lg shadow-lg p-4 flex flex-col">
+              <img
+                src={`http://localhost:8000/${taxibe.taxibe.photo}`}
+                alt={`Taxibe - ${taxibe.taxibe.marque}`}
+                className="w-full h-32 object-cover rounded-t-lg"
+              />
+              <div className="flex-grow p-2">
+                <h3 className="text-lg font-semibold">{taxibe.taxibe.marque}</h3>
+                <p>Matricule: {taxibe.taxibe.matricule}</p>
+                <p>Chauffeur: {taxibe.taxibe.chauffeur}</p>
+                <p>Place total: {taxibe.taxibe.nb_place} </p>
+                <p>Places disponibles: {taxibe.place_dispo}</p>
+              </div>
+              <button
+                onClick={() => navigate(`/select_seats?taxibeId=${taxibe.id}`, {
+                  state: {
+                    totalPlaces: taxibe.taxibe.nb_place,
+                    availablePlaces: taxibe.place_dispo,
+                    marque: taxibe.taxibe.marque
+                  }
+                })}
+                className="bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition duration-200"
+              >
+                View and Book Seat
+              </button>
             </div>
-         ))
+          ))
         ) : (
-          <div>
-            <p>Aucun Taxibe disponible pour ce trajet.</p>
-            <button onClick={() => navigate("/")} className="text-blue-600 mt-2 " >Retour à la recherche</button>
-          </div>
-        )
-      }
-              <button onClick={() => navigate("/")} className="text-blue-600 mt-2 "> Retour à la recherche </button>
-       </div>
-     </div>
-    </>
-
+          <p>Aucun Taxibe disponible pour ce trajet.</p>
+        )}
+      </div>
+    </div>
   );
 };
-
 
 export default AvailableTaxibe;
