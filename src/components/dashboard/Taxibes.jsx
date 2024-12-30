@@ -9,13 +9,15 @@ import {
   FiSearch,
   FiTruck,
   FiUsers,
-  FiHash
+  FiHash,
+  FiChevronDown
 } from 'react-icons/fi';
 
 export default function Taxibes() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTaxibe, setEditingTaxibe] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCooperative, setSelectedCooperative] = useState('');
   
   // Données étendues
   const [taxibes, setTaxibes] = useState([]);
@@ -56,13 +58,16 @@ export default function Taxibes() {
     getCooperative();
   }, []);
 
-  // Filtre amélioré avec correction
+  // Filtre amélioré avec correction et filtre par coopérative
   const filteredTaxibes = taxibes.filter(taxibe => {
-    return (
+    const matchesSearchTerm = 
       (taxibe.marque && taxibe.marque.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (taxibe.matricule && taxibe.matricule.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (taxibe.cooperative && taxibe.cooperative.nom.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+      (taxibe.cooperative.nom && taxibe.cooperative && taxibe.cooperative.nom.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesCooperative = selectedCooperative ? taxibe.cooperative.id === Number(selectedCooperative) : true;
+
+    return matchesSearchTerm && matchesCooperative;
   });
 
   const handleDelete = async (id) => {
@@ -154,6 +159,7 @@ export default function Taxibes() {
       } else {
         const response = await axios.post("http://127.0.0.1:8000/api/taxibe/", formDataToSend);
         setTaxibes([...taxibes, response.data]);
+        console.log(response.data);
         Swal.fire({
           title: 'TaxiBe créé avec success',
           icon:'success',
@@ -165,6 +171,8 @@ export default function Taxibes() {
         })
       }
       closeModal();
+      await getTaxibe();
+      await getCooperative();
     } catch (e) {
       console.error("Erreur lors de la soumission du formulaire:", e);
     }
@@ -189,6 +197,27 @@ export default function Taxibes() {
             <span>Nouveau Taxibe</span>
           </div>
         </button>
+      </div>
+
+      {/* Filtre par coopérative */}
+      <div className="relative">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Filtrer par Coopérative
+        </label>
+        <select
+          value={selectedCooperative}
+          onChange={(e) => setSelectedCooperative(e.target.value)}
+          className="w-full pl-3 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 
+            focus:ring-green-500 focus:border-transparent transition-all duration-300"
+        >
+          <option value="">Toutes les coopératives</option>
+          {cooperative.map((coop) => (
+            <option key={coop.id} value={coop.id}>
+              {coop.nom}
+            </option>
+          ))}
+        </select>
+        <FiChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
       </div>
 
       {/* Search avec compteur */}
@@ -331,7 +360,7 @@ export default function Taxibes() {
                 </label>
                 <select
                   name="cooperative"
-                  value={formData.cooperative.nom}
+                  value={formData.cooperative}
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 

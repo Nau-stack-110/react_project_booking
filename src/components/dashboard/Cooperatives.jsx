@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { FiPlus, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default function Cooperatives() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCoop, setEditingCoop] = useState(null);
   
   const [cooperatives, setCooperatives] = useState([]);
+  const [admins, setAdmins] = useState([]);
 
   const getCooperative= async () => {
     try {
@@ -18,13 +20,37 @@ export default function Cooperatives() {
     }
   };
 
+  const getAdmins = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/users/?is_admin_coop=True");
+      setAdmins(response.data);
+    } catch (e) {
+      console.error("Erreur lors du chargement des admins:", e);
+    }
+  };
+
   useEffect(() => {
     getCooperative();
+    getAdmins();
   }, []);
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette coopérative ?')) {
-      setCooperatives(cooperatives.filter(coop => coop.id !== id));
+      try {
+        await axios.delete(`http://127.0.0.1:8000/api/cooperative-admin/${id}/`);
+        setCooperatives(cooperatives.filter(cooperative => cooperative.id !== id));
+        Swal.fire({
+          title: 'Cooperative supprimer avec success',
+          icon:'success',
+          toast:'true',
+          timer:'6000',
+          position:'top-right',
+          timerProgressBase:true,
+          showConfirmButton:false,
+        })
+      } catch (e) {
+        console.error("Erreur lors de la suppression du cooperative:", e);
+      }
     }
   };
 
@@ -90,7 +116,10 @@ export default function Cooperatives() {
                 <span className="font-bold">Contact:</span> {coop.contact}
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Admin:</span> {coop.admin.username}
+                <span className="font-bold">Admin:</span> {coop.admin ? coop.admin.username : 'N/A'}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Admin (détails):</span> {admins.find(admin => admin.id === coop.admin?.id)?.username || 'N/A'}
               </p>
             </div>
           </motion.div>

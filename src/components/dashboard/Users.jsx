@@ -8,7 +8,9 @@ import {
   FiX, 
   FiSearch,
   FiShield,
-  FiUsers
+  FiUsers,
+  FiUser,
+  FiCheckCircle
 } from 'react-icons/fi';
 
 export default function Users() {
@@ -28,9 +30,12 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10); // Nombre d'utilisateurs par page
 
+  const [profileData, setProfileData] = useState(null);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
   const getUsers = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/users/");
+      const response = await axios.get("http://127.0.0.1:8000/api/user-profile/");
       setUsers(response.data);
     } catch (e) {
       console.error("Erreur lors du chargement des utilisateurs:", e);
@@ -78,7 +83,7 @@ export default function Users() {
     e.preventDefault();
     try {
       if (editingUser) {
-        const response = await axios.put(`http://127.0.0.1:8000/api/users/${editingUser.id}/`, formData);
+        const response = await axios.put(`http://127.0.0.1:8000/api/user-profile/${editingUser.id}/`, formData);
         setUsers(users.map(user => (user.id === editingUser.id ? response.data : user)));
         Swal.fire({
           title: 'Utilisateur mise à jour avec success',
@@ -90,7 +95,7 @@ export default function Users() {
           showConfirmButton:false,
         })
       } else {
-        const response = await axios.post("http://127.0.0.1:8000/api/users/", formData);
+        const response = await axios.post("http://127.0.0.1:8000/api/user-profile/", formData);
         setUsers([...users, response.data]);
         Swal.fire({
           title: 'Utilisateur crée avec success',
@@ -112,7 +117,7 @@ export default function Users() {
   const handleDelete = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/users/${id}/`);
+        await axios.delete(`http://127.0.0.1:8000/api/user-profile/${id}/`);
         setUsers(users.filter(user => user.id !== id));
         Swal.fire({
           title: 'Utilisateur supprimer avec success',
@@ -129,7 +134,12 @@ export default function Users() {
     }
   };
 
-  // Filtrer les utilisateurs par rôle
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Réinitialiser la page courante à 1 lors de la recherche
+  };
+
+  // Filtrer les utilisateurs par rôle et par recherche
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.username.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = roleFilter === 'all' || 
@@ -161,6 +171,41 @@ export default function Users() {
   // Ajout d'une constante pour le nombre d'utilisateurs filtrés
   const filteredUsersCount = filteredUsers.length;
 
+  const openProfileModal = async (userId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/profile/${userId}/`);
+      setProfileData(response.data);
+      setIsProfileModalOpen(true);
+    } catch (e) {
+      console.error("Erreur lors du chargement du profil:", e);
+    }
+  };
+
+  // Fonction pour vérifier un utilisateur
+  const handleVerifyUser = async (userId) => {
+    try {
+      // Mettre à jour l'état local immédiatement
+      setUsers(users.map(user => 
+        user.id === userId ? { ...user, profile: { ...user.profile, verified: true } } : user
+      ));
+      
+      // Appeler l'API pour mettre à jour l'utilisateur
+      await axios.patch(`http://127.0.0.1:8000/api/profile/${userId}/`, { verified: true });
+      
+      Swal.fire({
+        title: 'Utilisateur vérifié avec succès',
+        icon: 'success',
+        toast: 'true',
+        timer: '6000',
+        position: 'top-right',
+        timerProgressBase: true,
+        showConfirmButton: false,
+      });
+    } catch (e) {
+      console.error("Erreur lors de la vérification de l'utilisateur:", e);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
@@ -178,19 +223,18 @@ export default function Users() {
       </div>
 
       {/* Search and Role Filter */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col md:flex-row items-center gap-4">
         <div className="relative flex-1">
           <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             placeholder="Rechercher un utilisateur..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 
               focus:ring-green-500 focus:border-transparent transition-all duration-300"
           />
-            <span className="absolute right-3 top-1/2 transform -translate-y-1/2
-             text-sm text-gray-500">
+          <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
             {filteredUsersCount} résultat(s)
           </span>
         </div>
@@ -199,7 +243,7 @@ export default function Users() {
         <select 
           value={roleFilter} 
           onChange={(e) => setRoleFilter(e.target.value)} 
-          className="border border-gray-300 rounded-lg p-2"
+          className="border border-gray-300 rounded-lg p-2 w-full md:w-auto"
         >
           <option value="all">Tous les utilisateurs</option>
           <option value="admin">Admins</option>
@@ -225,6 +269,7 @@ export default function Users() {
                 <td className="py-3 px-6 flex items-center">
                   {user.is_superuser && <FiShield className="text-red-500 mr-2" />}
                   {user.is_admin_coop && <FiUsers className="text-green-500 mr-2" />}
+                  {user.verified && <FiCheckCircle className="text-green-500 mr-2" />}
                   {user.username}
                 </td>
                 <td className="py-3 px-6">{user.email}</td>
@@ -238,6 +283,16 @@ export default function Users() {
                   <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:underline">
                     <FiTrash2 /> 
                   </button>
+                  <button onClick={() => openProfileModal(user.id)} className="text-green-500 hover:underline">
+                    <FiUser />
+                  </button>
+                  {user.profile.verified ? (
+                    <span className="text-green-500">Vérifié</span>
+                  ) : (
+                    <button onClick={() => handleVerifyUser(user.id)} className="text-yellow-500 hover:underline">
+                      Vérifier
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -335,6 +390,26 @@ export default function Users() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {isProfileModalOpen && profileData && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4 transform transition-all duration-300 ease-in-out scale-100 hover:scale-105">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">{profileData.user.username}&apos;s Profile</h2>
+            <img src={profileData.image} alt={profileData.fullname} className="w-full h-32 object-cover rounded-lg mb-4" />
+            <div className="mb-4">
+              <p className="text-sm font-medium text-gray-700"><strong>Nom Complet:</strong> {profileData.fullname}</p>
+              <p className="text-sm font-medium text-gray-700"><strong>Bio:</strong> {profileData.bio}</p>
+              <p className="text-sm font-medium text-gray-700"><strong>Vérifié:</strong> {profileData.verified ? 'Oui' : 'Non'}</p>
+            </div>
+            <button 
+              onClick={() => setIsProfileModalOpen(false)} 
+              className="mt-4 w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg hover:bg-blue-600 transition-all duration-300"
+            >
+              Fermer
+            </button>
           </div>
         </div>
       )}
